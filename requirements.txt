@@ -1,0 +1,30 @@
+# Core Training & ML
+torch
+transformers
+accelerate
+peft
+bitsandbytes
+datasets
+sentencepiece
+tokenizers
+
+# Data Acquisition & Preprocessing
+playwright
+httpx
+beautifulsoup4
+tqdm
+pandas
+numpy
+lxml
+python-dotenv
+
+# Utilities
+pytest
+black
+isort
+pyyaml
+
+# Serving & UI
+fastapi
+uvicorn
+streamlit
