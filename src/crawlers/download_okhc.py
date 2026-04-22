@@ -87,40 +87,40 @@ def extract_v_pairs(filepath: str) -> list[dict]:
 
 def extract_gaksa_pairs(original_file: str, modern_file: str) -> list[dict]:
     """
-    gaksa.jsonl (한문 원문) + gaksa_modern.jsonl (현대어 번역)을
-    공통 id를 기준으로 매칭한다.
+    gaksa.jsonl (ks_A_B_C) + gaksa_modern.jsonl (mk_A_B)를 매칭한다.
+    매칭 규칙: gaksa:ks_001_0010_0010 -> gaksa_modern:mk_001_0010
+    (문서 번호 수준에서 매칭하여 문단들을 결합하거나 첫 문단 매칭)
     """
-    # 현대어 파일 인덱싱
     modern_index = {}
     with open(modern_file, "r", encoding="utf-8") as f:
-        for line in tqdm(f, desc="Indexing gaksa_modern"):
+        for line in f:
             try:
                 item = json.loads(line)
-                text = item.get("text", "").strip()
-                if text:
-                    modern_index[item.get("id", "")] = text
+                m = re.search(r"mk_([0-9_]+)", item.get("id", ""))
+                if m:
+                    doc_id = m.group(1)
+                    modern_index[doc_id] = item.get("text", "").strip()
             except Exception:
                 continue
 
     pairs = []
     with open(original_file, "r", encoding="utf-8") as f:
-        for line in tqdm(f, desc="Matching gaksa pairs"):
+        for line in f:
             try:
                 item = json.loads(line)
-                item_id = item.get("id", "")
-                modern_text = modern_index.get(item_id, "")
-                orig_text = item.get("text", "").strip()
-                if orig_text and modern_text and len(modern_text) > 10:
-                    pairs.append({
-                        "id": item_id,
-                        "original": normalize_nfd(orig_text),
-                        "modern_korean": clean_noise(modern_text),
-                        "script": item.get("script", ""),
-                        "corpus": item.get("corpus", ""),
-                        "source": item.get("source", ""),
-                        "strategy": "gaksa_cross_match",
-                        "origin": "gaksa",
-                    })
+                m = re.search(r"ks_([0-9_]+)", item.get("id", ""))
+                if m:
+                    doc_id = "_".join(m.group(1).split("_")[:2]) # 001_0010
+                    modern_text = modern_index.get(doc_id, "")
+                    orig_text = item.get("text", "").strip()
+                    if orig_text and modern_text:
+                        pairs.append({
+                            "id": item.get("id"),
+                            "original": normalize_nfd(orig_text),
+                            "modern_korean": clean_noise(modern_text),
+                            "strategy": "gaksa_prefix_match",
+                            "origin": "gaksa"
+                        })
             except Exception:
                 continue
     return pairs

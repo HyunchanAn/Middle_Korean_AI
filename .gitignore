@@ -1,14 +1,25 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-.env
-.venv
 venv/
+.env
+
+# Models & Weights
+lora_model_*/
+outputs*/
+*.safetensors
+*.bin
+*.pth
+*.pt
+unsloth_compiled_cache/
+
+# Data
 data/raw/
-data/processed/
-data/synthetic/
-*.log
-.ipynb_checkpoints/
+data/processed/*.jsonl
+!data/processed/mk_only_parallel.jsonl # Small GT is okay
+
+# IDEs
 .vscode/
 .idea/
-.DS_Store
+*.swp
