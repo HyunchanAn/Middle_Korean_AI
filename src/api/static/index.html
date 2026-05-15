@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Middle Korean AI Translator | Midnight Silk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --card-bg: #16161a;
+            --accent-color: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #2d2d35;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .translator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.2rem;
+            resize: none;
+            outline: none;
+            padding: 10px;
+        }
+
+        .output-area {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.2rem;
+            min-height: 250px;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+        }
+
+        .placeholder {
+            color: #475569;
+            font-style: italic;
+        }
+
+        .metrics-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .metric-card {
+            background: rgba(22, 22, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .hallucination-alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            display: none;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            margin-top: 10px;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-color);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .translator-grid { grid-template-columns: 1fr; }
+            .metrics-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Middle Korean AI</h1>
+            <p class="subtitle">중세국어-현대어 신경망 번역 및 품질 평가 대시보드</p>
+            <div class="status-badge">Model: Gemma-2-9B (Mocked)</div>
+        </header>
+
+        <div class="translator-grid">
+            <div class="card">
+                <span class="label">Middle Korean Input</span>
+                <textarea id="input-text" placeholder="번역할 중세국어 문장을 입력하세요..."></textarea>
+            </div>
+            <div class="card">
+                <span class="label">Modern Korean Translation</span>
+                <div id="output-text" class="output-area"><span class="placeholder">결과가 여기에 표시됩니다.</span></div>
+                <div id="hallucination-warning" class="hallucination-alert">
+                    <strong>⚠️ 환각 징후 감지:</strong> <span id="h-tags"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-section">
+            <div class="metric-card">
+                <div class="metric-value" id="m-bleu">--</div>
+                <div class="metric-label">BLEU Score</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="m-chrf">--</div>
+                <div class="metric-label">chrF Score</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="m-h-rate">--</div>
+                <div class="metric-label">Hallucination Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputArea = document.getElementById('input-text');
+        const outputArea = document.getElementById('output-text');
+        const hWarning = document.getElementById('hallucination-warning');
+        const hTags = document.getElementById('h-tags');
+
+        let timeout = null;
+
+        inputArea.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(async () => {
+                const text = inputArea.value.trim();
+                if (!text) {
+                    outputArea.innerHTML = '<span class="placeholder">결과가 여기에 표시됩니다.</span>';
+                    hWarning.style.display = 'none';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/translate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text })
+                    });
+                    const data = await response.json();
+                    
+                    outputArea.innerText = data.translated;
+
+                    if (data.hallucinations.length > 0) {
+                        hWarning.style.display = 'block';
+                        hTags.innerText = data.hallucinations.join(', ');
+                    } else {
+                        hWarning.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Translation error:', error);
+                }
+            }, 500); // 500ms debounce
+        });
+
+        async function loadMetrics() {
+            try {
+                const response = await fetch('/metrics');
+                const data = await response.json();
+                if (data.metrics) {
+                    document.getElementById('m-bleu').innerText = data.metrics.bleu.toFixed(2);
+                    document.getElementById('m-chrf').innerText = data.metrics.chrf.toFixed(2);
+                    document.getElementById('m-h-rate').innerText = data.metrics.hallucination_rate.toFixed(1) + '%';
+                }
+            } catch (error) {
+                console.error('Metrics loading error:', error);
+            }
+        }
+
+        loadMetrics();
+    </script>
+</body>
+</html>

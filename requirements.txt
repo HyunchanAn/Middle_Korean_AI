@@ -28,3 +28,8 @@ pyyaml
 fastapi
 uvicorn
 streamlit
+
+# Evaluation
+sacrebleu
+evaluate
+nltk
