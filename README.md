@@ -1,5 +1,26 @@
 # Middle Korean AI (NMT-MK)
+
+![Status](https://img.shields.io/badge/Status-v3.0_Phase_8-97ca00?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.14-007ec6?style=flat-square&logo=python&logoColor=white)
+![Backend](https://img.shields.io/badge/Backend-PyTorch_%26_KoBART-e05d44?style=flat-square&logo=pytorch&logoColor=white)
+![Hardware](https://img.shields.io/badge/Hardware-RTX_5080-fe7d37?style=flat-square&logo=nvidia&logoColor=white)
+![UI](https://img.shields.io/badge/UI-FastAPI_%26_Streamlit-007ec6?style=flat-square&logo=fastapi&logoColor=white)
+
 중세국어 신경망 기계 번역 시스템 개발 프로젝트
+
+## 성능 및 평가 결과 (Performance & Evaluation)
+본 프로젝트는 **RTX 5080 (16GB)** 환경에서 최적화된 추론 성능을 제공합니다. 아래는 베이스라인 모델(`KoBART-base-v2`)을 대상으로 한 성능 측정 결과입니다.
+
+| 평가 항목 | 측정 방법 | 결과 값 |
+| :--- | :--- | :--- |
+| **Inference Latency** | Avg / P95 (100 samples) | **352.87 ms** / 565.65 ms |
+| **Throughput** | Sequences per second | **2.83 seq/s** |
+| **GPU Memory Usage** | VRAM Allocated | **504.71 MB** |
+| **BLEU Score** | sacrebleu Baseline | **9.62** |
+| **chrF Score** | sacrebleu Baseline | **11.36** |
+| **Hallucination Rate** | Modern Term Detection | **0.58 %** |
+
+*측정 일시: 2026-05-16 | 테스트 코드: `src/tests/performance_benchmark.py`*
 
 ## 프로젝트 개요
 본 프로젝트는 15세기에서 17세기 사이의 중세국어(옛한글) 문헌을 현대어로 정교하게 번역하는 AI 모델을 구축하는 것을 목표로 합니다. 데이터가 부족한 중세국어의 특성을 극복하기 위해 대규모 언어 모델을 통한 데이터 증강과 역사 문헌 데이터베이스 크롤링 파이프라인을 구축합니다.

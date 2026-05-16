@@ -1,0 +1,9 @@
+{
+  "model": "gogamza/kobart-base-v2",
+  "device": "NVIDIA GeForce RTX 5080",
+  "num_samples": 100,
+  "avg_latency_ms": 352.86507348537447,
+  "p95_latency_ms": 565.6542510986328,
+  "throughput_fps": 2.833944402948817,
+  "vram_allocated_mb": 504.71435546875
+}
