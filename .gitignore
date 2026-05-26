@@ -17,9 +17,7 @@ unsloth_compiled_cache/
 # Data
 data/raw/
 data/processed/*.jsonl
-!data/processed/mk_only_parallel.jsonl # Small GT is okay
-!data/processed/samgang_parallel.jsonl
-!data/processed/extra_parallel.jsonl
+!data/processed/*_parallel.jsonl
 
 # IDEs
 .vscode/

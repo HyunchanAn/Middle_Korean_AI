@@ -35,17 +35,21 @@ def main():
     else:
         st.info("💾 로컬 파일 시스템 저장 모드로 동작 중입니다.")
         
+    dataset_options = {
+        "합성 데이터 (Gemma)": FILTERED_FILE,
+        "삼강행실도 파싱 원본 (ITKC)": SAMGANG_FILE,
+        "석보상절 파싱 원본 (ITKC)": DATA_DIR / "seokbo_parallel.jsonl",
+        "이륜행실도 파싱 원본 (ITKC)": DATA_DIR / "iryun_parallel.jsonl",
+        "정속언해 파싱 원본 (ITKC)": DATA_DIR / "jeongsok_parallel.jsonl",
+        "기타 파싱 원본 (ITKC)": DATA_DIR / "extra_parallel.jsonl"
+    }
+    
     dataset_option = st.sidebar.selectbox(
         "검수할 데이터셋 선택",
-        ["합성 데이터 (Gemma)", "삼강행실도 파싱 원본 (ITKC)", "추가 학습자료 파싱본 (ITKC)"]
+        list(dataset_options.keys())
     )
     
-    if dataset_option == "합성 데이터 (Gemma)":
-        target_file = FILTERED_FILE
-    elif dataset_option == "삼강행실도 파싱 원본 (ITKC)":
-        target_file = SAMGANG_FILE
-    else:
-        target_file = DATA_DIR / "extra_parallel.jsonl"
+    target_file = dataset_options[dataset_option]
         
     # 데이터 로드 및 세션 상태 관리 (로컬 백업용)
     if 'current_dataset' not in st.session_state or st.session_state.current_dataset != dataset_option:
