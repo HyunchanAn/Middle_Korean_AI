@@ -1,51 +1,100 @@
 import os
 import json
+import time
 from typing import List, Dict
+from pathlib import Path
+
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
 
 class SyntheticGenerator:
     """
-    Handles synthetic data generation using LLMs.
-    Targets Gemma 4 / Llama 3.1 8B via vLLM or OpenAI-compatible API.
+    Handles synthetic data generation using LLMs via Back-translation.
+    Targets OpenAI-compatible API (OpenAI, vLLM, etc.)
     """
-    def __init__(self, model_name: str = "Gemma-4-26B-MoE", api_key: str = None):
+    def __init__(self, model_name: str = "gemma4", api_key: str = None, base_url: str = None):
+        # Ollama 기본 주소 및 더미 API 키 설정
         self.model_name = model_name
-        self.api_key = api_key
-        # In a real environment, we'd initialize local vLLM or API client here.
-
-    def create_augmentation_prompt(self, context_pairs: List[Dict[str, str]], target_count: int = 5) -> str:
-        """
-        Creates a few-shot prompt for generating synthetic Middle Korean pairs.
-        """
-        prompt = (
-            "당신은 중세 국어 전문가입니다. 다음의 중세 국어-현대어 번역 쌍을 참고하여, "
-            "비슷한 문법 구조와 어휘를 가진 새로운 중세 국어 문장과 그에 대응하는 현대어 번역을 생성하세요.\n"
-            "주의사항:\n"
-            "1. 옛한글(아래아, 방점, 순경음 등)을 정확히 사용하세요.\n"
-            "2. 15세기~17세기 문체 특징을 유지하세요.\n"
-            "3. 방점을 포함하여 생성하세요.\n\n"
-        )
+        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", "ollama")
+        self.base_url = base_url or os.environ.get("OPENAI_BASE_URL", "http://localhost:11434/v1")
         
-        # Add few-shot examples
-        for pair in context_pairs:
-            prompt += f"중세국어: {pair['middle']}\n현대어: {pair['modern']}\n\n"
-            
-        prompt += f"이제 새로운 번역 쌍을 {target_count}개 생성하세요. 형식은 JSONL로 출력하세요.\n"
+        if OpenAI:
+            self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+        else:
+            self.client = None
+
+    def create_backtranslation_prompt(self, mk_text: str) -> str:
+        prompt = (
+            "당신은 중세 국어(15세기~17세기) 전문가입니다. "
+            "다음 중세 국어 원문을 현대 국어로 자연스럽게 번역하세요.\n\n"
+            "주의사항:\n"
+            "1. 옛말의 의미를 살리되, 현대인이 읽기 편한 문장으로 번역할 것.\n"
+            "2. 직역보다는 의미 단위의 의역을 우선할 것.\n"
+            "3. 번역된 현대어 문장만 출력할 것 (기타 부연 설명 생략).\n\n"
+            f"[중세국어 원문]\n{mk_text}\n\n[현대어 번역]\n"
+        )
         return prompt
 
-    def generate(self, seed_data: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """
-        Simulates generation process.
-        """
-        print(f"Generating synthetic data using {self.model_name}...")
-        # actual inference call would go here
-        return []
+    def generate_translation(self, mk_text: str) -> str:
+        if not self.client:
+            print("WARNING: OpenAI client not initialized. Returning mock translation.")
+            return "[MOCK 번역] " + mk_text[:30] + "..."
+            
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=[
+                    {"role": "system", "content": "당신은 중세 국어를 현대어로 번역하는 언어 전문가입니다."},
+                    {"role": "user", "content": self.create_backtranslation_prompt(mk_text)}
+                ],
+                temperature=0.3,
+                max_tokens=1024
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            print(f"Error during translation: {e}")
+            return ""
+
+def process_corpus(input_path: str, output_path: str, max_samples: int = None):
+    gen = SyntheticGenerator()
+    
+    with open(input_path, 'r', encoding='utf-8') as f:
+        mk_sentences = json.load(f)
+        
+    if max_samples:
+        mk_sentences = mk_sentences[:max_samples]
+        
+    print(f"Loaded {len(mk_sentences)} sentences. Starting back-translation...")
+    
+    results = []
+    for i, mk_text in enumerate(mk_sentences):
+        print(f"Processing {i+1}/{len(mk_sentences)}...")
+        modern_text = gen.generate_translation(mk_text)
+        
+        # Save in the Biblify instruction format
+        pair = {
+            "instruction": "다음 중세국어 문장을 현대어로 번역하세요.",
+            "input": mk_text,
+            "output": modern_text
+        }
+        results.append(pair)
+        
+        # Rate limiting delay if using real API
+        if gen.client:
+            time.sleep(0.5) 
+            
+    with open(output_path, 'w', encoding='utf-8') as f:
+        for r in results:
+            f.write(json.dumps(r, ensure_ascii=False) + '\n')
+            
+    print(f"Saved {len(results)} pairs to {output_path}")
 
 if __name__ == "__main__":
-    gen = SyntheticGenerator()
-    examples = [
-        {"middle": "나랏말〯싸미〮 댱귁〮에〮 달 servants 〮아〮", "modern": "나라의 말이 중국과 달라"},
-        {"middle": "닐굽〮 디〮위〮예〮 닐오〮니〮", "modern": "일곱 번에 이르니"}
-    ]
-    test_prompt = gen.create_augmentation_prompt(examples)
-    print("--- Generated Prompt ---")
-    print(test_prompt)
+    project_root = Path(__file__).resolve().parent.parent.parent
+    input_file = project_root / "data" / "processed" / "unlabeled_mk_sentences.json"
+    output_file = project_root / "data" / "processed" / "synthetic_mk_parallel.jsonl"
+    
+    # 전체 1,200문장 번역 실행
+    process_corpus(input_file, output_file)

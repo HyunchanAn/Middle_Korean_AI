@@ -1,0 +1,15 @@
+{
+  "backend": "tokenizers",
+  "bos_token": "</s>",
+  "eos_token": "</s>",
+  "extra_special_tokens": [
+    "[15C]",
+    "[17C]"
+  ],
+  "is_local": false,
+  "mask_token": "<mask>",
+  "model_max_length": 1000000000000000019884624838656,
+  "pad_token": "<pad>",
+  "tokenizer_class": "TokenizersBackend",
+  "unk_token": "<unk>"
+}

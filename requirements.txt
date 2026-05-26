@@ -1,12 +1,15 @@
 # Core Training & ML
-torch
+streamlit
 transformers
-accelerate
+torch
+Pillow
+datasets
+st-gsheets-connection
 peft
 bitsandbytes
-datasets
 sentencepiece
 tokenizers
+accelerate
 
 # Data Acquisition & Preprocessing
 playwright
