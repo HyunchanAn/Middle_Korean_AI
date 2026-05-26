@@ -65,13 +65,7 @@
 pip install -r src/requirements.txt
 ```
 
-### 2. 검수자용 UI (Streamlit) 실행
-Tinder 스타일의 번역 검수 웹 UI를 엽니다.
-```bash
-streamlit run src/api/review_app.py
-```
-
-### 3. 번역 API 서버 (FastAPI) 구동
+### 2. 번역 API 서버 (FastAPI) 구동
 RESTful 형태의 중세국어 번역 서버를 시작합니다.
 ```bash
 uvicorn src.api.app:app --reload
