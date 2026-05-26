@@ -20,7 +20,12 @@
 | **chrF Score** | sacrebleu Baseline | **11.36** |
 | **Hallucination Rate** | Modern Term Detection | **0.58 %** |
 
-*측정 일시: 2026-05-16 (이전 v2 모델 기준, 현재 최신 데이터셋으로 v3 학습 준비 중)*
+*측정 일시: 2026-05-16 (이전 v2 모델 기준. 현재 Phase 10이 완료되어 총 1,600여 쌍의 순수 15세기 v3 데이터셋이 확보되었으며, 곧 모델 v3 학습이 진행될 예정입니다.)*
+
+### 🚀 향후 벤치마크 로드맵 (Issue #3)
+현재 지표는 High-end 데스크탑 사양(RTX 5080) 기준입니다. 추후 실제 웹 서비스 배포 환경을 고려하여 다음을 측정할 계획입니다.
+- **CPU Inference**: Hugging Face Spaces 기본 사양(2코어 CPU, 16GB RAM)에서의 Latency 및 Throughput 재측정
+- **모델 경량화 실험**: ONNX Runtime 전환 및 8-bit 양자화(Quantization) 적용 시의 BLEU score 보존율과 속도 향상 비율 비교 분석
 
 ## 프로젝트 개요
 본 프로젝트는 15세기에서 17세기 사이의 중세국어(옛한글) 문헌을 현대어로 정교하게 번역하는 AI 모델을 구축하는 것을 목표로 합니다. 데이터가 부족한 중세국어의 특성을 극복하기 위해 대규모 언어 모델을 통한 데이터 증강과 역사 문헌 데이터베이스 크롤링 파이프라인을 구축합니다.
@@ -29,7 +34,7 @@
 
 <table>
   <tr>
-    <td align="center"><img src="profile_HyunchanAn.jpg" width="150px;" alt="Hyunchan An"/><br /><sub><b>Hyunchan An</b></sub><br />리드 개발</td>
+    <td align="center"><img src="profile_HyunchanAn.jpg" width="150px;" alt="Hyunchan An"/><br /><sub><b>Hyunchan An</b></sub><br />리드 개발<br /><a href="https://x.com/DDS_HCAn">Twitter</a></td>
     <td align="center"><img src="profile_UBora.jpg" width="150px;" alt="유보라"/><br /><sub><b>유보라</b></sub><br />중세국어 번역 데이터 검수<br /><a href="https://chzzk.id/Ubora">Chzzk</a> | <a href="https://x.com/B0R4_S2C">Twitter</a></td>
   </tr>
 </table>
@@ -37,7 +42,7 @@
 ## 데이터 소스 (Data Sources)
 본 프로젝트는 다음의 신뢰도 높은 역사 문헌 데이터베이스를 주요 소스로 활용합니다.
 - 한국고전종합DB(ITKC): 세종한글고전 (소학언해, 삼강행실도, 석보상절 등 순수 15세기 중세국어 원문)
-- [SCP-KO-15C 중세 국어 자료실](http://scp-ko-15c.wikidot.com/): 중세국어 어형, 악센트 및 어휘 사전 구축을 위한 레퍼런스 데이터 (루트 경로 `/scp-ko-15c.wikidot/`에 아카이빙)
+- [SCP-KO-15C 중세 국어 자료실](http://scp-ko-15c.wikidot.com/): 중세국어 어형, 악센트 및 어휘 사전 구축을 위한 레퍼런스 데이터 (루트 경로 `data/raw/scp-ko-15c.wikidot/`에 아카이빙)
 - *주의: 한문 원문 기반의 조선왕조실록 및 근대 행정 문서는 환각(Hallucination) 방지를 위해 배제됨.*
 
 ## 기술 로드맵 및 사양
@@ -51,17 +56,42 @@
 - 실시간 번역 전용 모델: KoBART (Encoder-Decoder) 전이학습 (Inference 경량화)
 - 텍스트 표준화: NFD (자모 분리) 기반 옛한글 유니코드 정규화 및 토크나이저 어휘 사전(Vocabulary) 동적 확장
 
+## 🚀 시작하기 (Getting Started)
+외부 개발자 및 협업자가 로컬에서 프로젝트를 구동하기 위한 가이드입니다.
+
+### 1. 환경 설정 및 의존성 설치
+본 프로젝트는 Python 3.14 이상 환경을 권장합니다.
+```bash
+pip install -r src/requirements.txt
+```
+
+### 2. 검수자용 UI (Streamlit) 실행
+Tinder 스타일의 번역 검수 웹 UI를 엽니다.
+```bash
+streamlit run src/api/review_app.py
+```
+
+### 3. 번역 API 서버 (FastAPI) 구동
+RESTful 형태의 중세국어 번역 서버를 시작합니다.
+```bash
+uvicorn src.api.app:app --reload
+```
+
 ## 디렉토리 구조
-- configs/: 학습 하이퍼파라미터 및 설정 파일
-- data/: 초도 수집 데이터 및 정규화 완료된 코퍼스
-- src/:
-  - api/: FastAPI 웹 서비스 및 프론트엔드 정적 파일
-  - augment/: LLM 기반 합성 데이터 생성 로직
-  - crawlers/: 국사편찬위원회 등 역사 DB 크롤러
-  - models/: 학습 및 추론 엔진 (Inference v3)
-  - preprocess/: 옛한글 정규화 및 데이터셋 빌더
-  - utils/: 공통 유틸리티
-- lora_model_bidirectional_v3/: 최종 양방향 번역 LoRA 어댑터
+- `data/`
+  - `raw/`: 원시 데이터 및 `scp-ko-15c.wikidot` 아카이브 등
+  - `processed/`: 옛한글 정규화 및 필터링 완료 코퍼스 (`samgang_parallel.jsonl` 등)
+- `models/`: 모델 체크포인트 보관소 (`kobart-middle-korean`)
+- `notebooks/`: 실험용 주피터 노트북
+- `src/`
+  - `api/`: FastAPI 서버 및 Streamlit 앱 (`app.py`, `review_app.py`, `ocr_app.py`)
+  - `augment/`: LLM 기반 합성 데이터 생성 (`synthetic_gen.py`, `filter_data.py`)
+  - `crawlers/`: 역사 DB 크롤러 (`itkc_scraper.py` 등)
+  - `models/`: 추론, OCR, 평가 스크립트
+  - `preprocess/`: 옛한글 NFD 정규화 및 데이터셋 전처리 (`build_samgang_dataset.py` 등)
+  - `train/`: 학습 스크립트 (`train.py`, `model_setup.py`)
+  - `utils/`: 기타 유틸리티 (`dataset_qc.py` 등)
+- `lora_model_bidirectional_v3/`: 최종 양방향 번역 LoRA 어댑터 가중치 (학습 예정)
 
 ## 현재 진행 상황
 - **Phase 8~10 (데이터 재구축 및 모델 학습 파이프라인 완성)**: 

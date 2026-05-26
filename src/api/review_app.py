@@ -37,10 +37,15 @@ def main():
         
     dataset_option = st.sidebar.selectbox(
         "검수할 데이터셋 선택",
-        ["합성 데이터 (Gemma)", "삼강행실도 파싱 원본 (ITKC)"]
+        ["합성 데이터 (Gemma)", "삼강행실도 파싱 원본 (ITKC)", "추가 학습자료 파싱본 (ITKC)"]
     )
     
-    target_file = FILTERED_FILE if dataset_option == "합성 데이터 (Gemma)" else SAMGANG_FILE
+    if dataset_option == "합성 데이터 (Gemma)":
+        target_file = FILTERED_FILE
+    elif dataset_option == "삼강행실도 파싱 원본 (ITKC)":
+        target_file = SAMGANG_FILE
+    else:
+        target_file = DATA_DIR / "extra_parallel.jsonl"
         
     # 데이터 로드 및 세션 상태 관리 (로컬 백업용)
     if 'current_dataset' not in st.session_state or st.session_state.current_dataset != dataset_option:
