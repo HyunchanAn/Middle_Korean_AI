@@ -26,7 +26,7 @@
 본 프로젝트는 15세기에서 17세기 사이의 중세국어(옛한글) 문헌을 현대어로 정교하게 번역하는 AI 모델을 구축하는 것을 목표로 합니다. 데이터가 부족한 중세국어의 특성을 극복하기 위해 대규모 언어 모델을 통한 데이터 증강과 역사 문헌 데이터베이스 크롤링 파이프라인을 구축합니다.
 
 ### 👥 프로젝트 참여자 (Contributors)
-- **리드 개발**: Hyunchan An (개발 파트너: Antigravity AI)
+- **리드 개발**: Hyunchan An
 - **중세국어 원문 및 번역 데이터 검수**: 유보라 ([chzzk.id/Ubora](https://chzzk.id/Ubora), [Twitter](https://x.com/B0R4_S2C))
 
 ## 데이터 소스 (Data Sources)

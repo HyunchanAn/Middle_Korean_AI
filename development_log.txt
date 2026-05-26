@@ -139,4 +139,4 @@
    - `filter_data.py` 생성. LLM 번역 결과물의 길이 비율, 영어 텍스트 포함 여부, 프롬프트 누출 문구 등을 1차적으로 쳐내는 스크립트.
 2. 검수자용 검수 앱 (HITL):
    - `review_app.py` 생성. 개발 지식이 없는 유보라 님을 위한 Streamlit 기반 Tinder형 광클릭 검수 UI.
-   - 구글 시트 연동 라이브러리(`st-gsheets-connection`) 추가 및 엑셀(스프레드시트) 실시간 저장 아키텍처 반영.
+   - 구글 시트 연동 라이브러리(`st-gsheets-connection`) 추가 및 엑셀(스프레드시트; https://docs.google.com/spreadsheets/d/1OLB4IJUt6t-z3W9EDE4ugzzLJuvt_OkwjO3V2-TXIu0/edit?usp=drive_link) 실시간 저장 아키텍처 반영.
