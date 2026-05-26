@@ -104,6 +104,7 @@ def main():
                 webhook_url = st.secrets["gsheets_webhook_url"]
                 payload = {
                     "순번": idx + 1,
+                    "말뭉치": st.session_state.current_dataset,
                     "옛말": current_item.get("input", ""),
                     "요즘말": translation,
                     "결과": status
