@@ -1,18 +1,18 @@
-{"input": "【어버ᅀᅵ 효도ᄒᆞ욤】", "output": "효부모(孝父母)【어버이께 효도함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0010"}}
-{"input": "【혀ᇰ뎨 ᄉᆞ라ᇰᄒᆞ야 사괴욤】", "output": "우형제(友兄弟)【형제를 사랑하여 사귐.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0020"}}
-{"input": "【겨집과화도ᇰ.】", "output": "화실가(和室家)【아내와 화목함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0030"}}
-{"input": "【ᄌᆞ식 손ᄌᆞ들 ᄀᆞᄅᆞ춈】", "output": "훈자손(訓子孫)【자식과 손자들을 가르침】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0040"}}
-{"input": "【아ᅀᆞᆷᄃᆞᆯ와화도ᇰ홈】", "output": "목종족(睦宗族)【친척들과 화목함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0050"}}
-{"input": "【어미편혼인편 아ᅀᆞᆷ사괴욤】", "output": "후친의(厚親誼)【어머니편의 친척이나 혼인으로 맺어진 친척과 사귐.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0060"}}
-{"input": "【이웃ᄆᆞᅀᆞᆯᄒᆞᆯ어엿비너굠】", "output": "휼린리(恤隣里)【이웃과 마을 사람을 긍휼히 여김】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0070"}}
-{"input": "【버들삼가아사괴라】", "output": "신교우(愼交友)【벗을 삼가 사귀어라.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0080"}}
-{"input": "【죠ᇰ들 ᄃᆡ졉ᄒᆞ여브리욤】", "output": "대간복(待幹僕)【종들을 대접하면서 부림.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0090"}}
-{"input": "【사ᇰᄉᆞ졔뎐ᄂᆞᆯ조심ᄒᆞ욤】", "output": "근상제(謹喪制)【상사(喪事)와 제사(祭祀)를 정중히 모심】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0100"}}
-{"input": "【분묘ᄅᆞᆯ듀ᇰ히간ᄉᆞ홈】", "output": "중분묘(重墳墓)【무덤을 소중히 보살핌.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0110"}}
-{"input": "【쇽졀업슨님신이바디말라】", "output": "원음사(遠滛祀)【부정한 귀신에게 제사 지내지 말라.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0120"}}
-{"input": "【녀름지ᅀᅵ힘서ᄒᆞ욤】", "output": "무본업(務本業)【농사짓기를 힘써 함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0130"}}
-{"input": "【바ᄐᆡᆺ고ᇰ셰날독바돔】", "output": "수전조(收田租)【밭에서 난 소출(所出)을 거둠.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0140"}}
-{"input": "【검박호믈슈ᇰ샤ᇰ홈】", "output": "숭검박(崇儉朴)【검소하고 소박한 것을 숭상함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0150"}}
-{"input": "【노호ᄋᆞᆫ이를ᄎᆞᆷᄆᆞᆷ】", "output": "징분노(懲忿怒)【노여운 일을 참음.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0160"}}
-{"input": "【주으려 ᄒᆞᄂᆞ니진졔홈】", "output": "진기황(賑飢荒)【굶주려 있는 사람을 도와줌.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0170"}}
-{"input": "【됴ᄒᆞᆫ 일 하 ᄒᆞ욤】", "output": "적음덕(積陰德)【좋은 일을 많이 함.】", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0180"}}
+{"input": "【어버ᅀᅵ 효도ᄒᆞ욤】", "output": "효부모(孝父母)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0010"}}
+{"input": "【혀ᇰ뎨 ᄉᆞ라ᇰᄒᆞ야 사괴욤】", "output": "우형제(友兄弟)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0020"}}
+{"input": "【겨집과화도ᇰ.】", "output": "화실가(和室家)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0030"}}
+{"input": "【ᄌᆞ식 손ᄌᆞ들 ᄀᆞᄅᆞ춈】", "output": "훈자손(訓子孫)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0040"}}
+{"input": "【아ᅀᆞᆷᄃᆞᆯ와화도ᇰ홈】", "output": "목종족(睦宗族)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0050"}}
+{"input": "【어미편혼인편 아ᅀᆞᆷ사괴욤】", "output": "후친의(厚親誼)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0060"}}
+{"input": "【이웃ᄆᆞᅀᆞᆯᄒᆞᆯ어엿비너굠】", "output": "휼린리(恤隣里)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0070"}}
+{"input": "【버들삼가아사괴라】", "output": "신교우(愼交友)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0080"}}
+{"input": "【죠ᇰ들 ᄃᆡ졉ᄒᆞ여브리욤】", "output": "대간복(待幹僕)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0090"}}
+{"input": "【사ᇰᄉᆞ졔뎐ᄂᆞᆯ조심ᄒᆞ욤】", "output": "근상제(謹喪制)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0100"}}
+{"input": "【분묘ᄅᆞᆯ듀ᇰ히간ᄉᆞ홈】", "output": "중분묘(重墳墓)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0110"}}
+{"input": "【쇽졀업슨님신이바디말라】", "output": "원음사(遠滛祀)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0120"}}
+{"input": "【녀름지ᅀᅵ힘서ᄒᆞ욤】", "output": "무본업(務本業)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0130"}}
+{"input": "【바ᄐᆡᆺ고ᇰ셰날독바돔】", "output": "수전조(收田租)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0140"}}
+{"input": "【검박호믈슈ᇰ샤ᇰ홈】", "output": "숭검박(崇儉朴)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0150"}}
+{"input": "【노호ᄋᆞᆫ이를ᄎᆞᆷᄆᆞᆷ】", "output": "징분노(懲忿怒)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0160"}}
+{"input": "【주으려 ᄒᆞᄂᆞ니진졔홈】", "output": "진기황(賑飢荒)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0170"}}
+{"input": "【됴ᄒᆞᆫ 일 하 ᄒᆞ욤】", "output": "적음덕(積陰德)", "metadata": {"source": "jeongsok", "record_id": "P03_JS_e01_v001_0180"}}

@@ -40,8 +40,7 @@ def main():
         "삼강행실도 파싱 원본 (ITKC)": SAMGANG_FILE,
         "석보상절 파싱 원본 (ITKC)": DATA_DIR / "seokbo_parallel.jsonl",
         "이륜행실도 파싱 원본 (ITKC)": DATA_DIR / "iryun_parallel.jsonl",
-        "정속언해 파싱 원본 (ITKC)": DATA_DIR / "jeongsok_parallel.jsonl",
-        "기타 파싱 원본 (ITKC)": DATA_DIR / "extra_parallel.jsonl"
+        "정속언해 파싱 원본 (ITKC)": DATA_DIR / "jeongsok_parallel.jsonl"
     }
     
     dataset_option = st.sidebar.selectbox(
