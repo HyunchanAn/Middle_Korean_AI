@@ -83,3 +83,26 @@
 2. **외부 데이터셋 주의사항**:
    - [SCP-KO-15C] 등 위키닷 기반 데이터는 크리에이티브 커먼즈 저작자표시-동일조건변경허락(CC-BY-SA 3.0) 라이선스를 따릅니다.
    - 외부 기관의 인가된 코퍼스를 추가로 확보할 경우 원문 복제 및 외부 배포 금지 조항을 엄격히 준수하며, 프로젝트는 번역/인식 모델의 가중치(Weights)만 배포합니다.
+
+## 참고문헌 (References)
+본 프로젝트의 학습 및 검증에 활용되거나 추가 수집 대상으로 지정된 고문헌 자료들입니다. (출처: [한국고전종합DB - 세종한글고전](http://db.sejongkorea.org/))
+
+### 📖 석보상절 (釋譜詳節, 1447년)
+세종의 명으로 수양대군(세조)이 부처의 일대기와 설법을 엮어 편찬한 최초의 산문 자료.
+- [역주 석보상절 제6](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v006&recordId=P13_SS_e01_v006)
+- [역주 석보상절 제9](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v009&recordId=P13_SS_e01_v009)
+- [역주 석보상절 제11](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v011&recordId=P13_SS_e01_v011)
+- [역주 석보상절 제13](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v013&recordId=P13_SS_e01_v013)
+- [역주 석보상절 제19](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v019&recordId=P13_SS_e01_v019)
+- [역주 석보상절 제20](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v020&recordId=P13_SS_e01_v020)
+- [역주 석보상절 제21](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v021&recordId=P13_SS_e01_v021)
+
+### 📖 삼강행실도 (三綱行實圖, 1432년 / 언해본 1481년)
+조선 초기 백성들의 윤리 교화를 위해 편찬된 서적으로, 삽화와 함께 중세국어 원문이 기록되어 있습니다.
+- [역주 삼강행실효자도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v001_0000)
+- [역주 삼강행실충신도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v002_0000)
+- [역주 삼강행실열녀도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v003_0000)
+
+### 📖 기타 교화 문헌
+- **이륜행실도 (二倫行實圖, 1518년)**: [역주 이륜행실도](http://db.sejongkorea.org/front/detail.do?bkCode=P02_IR_v001&recordId=P02_IR_e01)
+- **정속언해 (正俗諺解, 1518년)**: [역주 정속언해](http://db.sejongkorea.org/front/detail.do?bkCode=P03_JS_v001&recordId=P03_JS_e01)
