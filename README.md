@@ -64,7 +64,7 @@
   - **[해결됨]** 1,200여 개의 15세기 원문을 활용하는 LLM 역번역(Back-translation) 데이터 증강 파이프라인 구축 (Issue #1).
   - **[해결됨]** KoBART 토크나이저의 NFD 옛한글 처리 문제(`[UNK]` 방지)를 해결하기 위해 동적 Vocabulary 확장 및 모델 차원 조정 로직 구현 완료 (Phase 9).
   - **[해결됨]** 생성된 역번역 데이터의 환각(Hallucination) 현상을 차단하기 위한 1차 자동 길이/키워드 필터링 로직 구현 (Phase 10).
-  - **[해결됨]** 비개발자(검수자)를 위한 Streamlit + Google Sheets 기반의 실시간 광클릭 검수 웹 애플리케이션(`review_app.py`) 개발 완료 (Phase 10).
+  - **[해결됨]** 검수자를 위한 Streamlit + Google Sheets 기반의 실시간 광클릭 검수 웹 애플리케이션(`review_app.py`) 개발 완료 (Phase 10).
 
 ## 배포 및 서비스 계획
 - 자체 학습한 경량 번역 모델(Encoder-Decoder)을 활용하여 Hugging Face Spaces 기반의 오픈소스 AI 웹 서비스로 배포 예정.
