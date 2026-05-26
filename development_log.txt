@@ -140,3 +140,32 @@
 2. 검수자용 검수 앱 (HITL):
    - `review_app.py` 생성. 개발 지식이 없는 유보라 님을 위한 Streamlit 기반 Tinder형 광클릭 검수 UI.
    - 구글 시트 연동 라이브러리(`st-gsheets-connection`) 추가 및 엑셀(스프레드시트; https://docs.google.com/spreadsheets/d/1OLB4IJUt6t-z3W9EDE4ugzzLJuvt_OkwjO3V2-TXIu0/edit?usp=drive_link) 실시간 저장 아키텍처 반영.
+
+[2026-05-26 16:15] Phase 11: ITKC 삼강행실도 105편 파싱 및 정제 완료
+1. 파싱 스크립트 수정 및 인코딩 해결:
+   - itkc_scraper.py에서 중세국어 원문 내에 섞인 주석(pp_sup_hover)을 분해하여 순수 원문만 추출하도록 로직 보완.
+   - ITKC 고유의 한양 사용자 정의 영역(Hanyang PUA) 인코딩으로 인해 문자가 깨지는 현상을 해결하기 위해 `hypua2jamo` 패키지를 도입하여 옛한글을 표준 유니코드(첫가끝)로 변환 적용 (`build_samgang_dataset.py`).
+2. 데이터 추출 완료:
+   - 효자도, 충신도, 열녀도 총 105편 데이터 스크래핑 성공 및 data/processed/samgang_parallel.jsonl 병렬 코퍼스 변환 완료.
+3. UI 연동:
+   - 검수용 UI(review_app.py)에서 해당 데이터를 불러와 문제지/정답지를 확인할 수 있도록 조치함.
+4. 학습자료 추가 발견
+   - 역주 석보상절 제6 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v006&recordId=P13_SS_e01_v006)
+   - 역주 석보상절 제9 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v009&recordId=P13_SS_e01_v009)
+   - 역주 석보상절 제11 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v011&recordId=P13_SS_e01_v011)
+   - 역주 석보상절 제13 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v013&recordId=P13_SS_e01_v013)
+   - 역주 석보상절 제19 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v019&recordId=P13_SS_e01_v019)
+   - 역주 석보상절 제20 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v020&recordId=P13_SS_e01_v020)
+   - 역주 석보상절 제21 (http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v021&recordId=P13_SS_e01_v021)
+   - 역주 삼강행실효자도 (http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v001_0000)
+   - 역주 삼강행실충신도 (http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v002_0000)
+   - 역주 삼강행실열녀도 (http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v003_0000)
+   - 역주 이륜행실도 (http://db.sejongkorea.org/front/detail.do?bkCode=P02_IR_v001&recordId=P02_IR_e01)
+   - 역주 정속언해 (http://db.sejongkorea.org/front/detail.do?bkCode=P03_JS_v001&recordId=P03_JS_e01)
+
+
+
+
+
+
+
