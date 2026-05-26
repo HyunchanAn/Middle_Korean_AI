@@ -44,3 +44,14 @@
 3. 품질 평가 수행 (src/models/evaluator.py):
    - Baseline 결과: BLEU 9.62, chrF 11.36, Hallucination Rate 0.58%.
 4. 문서 업데이트: 실제 측정 데이터를 바탕으로 README.md의 '성능 및 평가 결과' 섹션 최신화 완료.
+
+[2026-05-26 11:15] Phase 8: KoBART 옛한글 토크나이저 대응 및 라이브러리 호환성 패치
+1. Issue #2 해결 - KoBART NFD 옛한글 토큰 확장:
+   - src/preprocess/test_tokenizer_nfd.py 작성하여 동적 토큰 확장 인프라 확보.
+   - train_translator.py 내 주요 중세국어 자모(방점, 아래아 등) 9개 토큰 추가 및 모델 임베딩(resize_token_embeddings) 리사이징 완료.
+2. 라이브러리 호환성 패치 (Transformers 최신 버전 대응):
+   - as_target_tokenizer 를 text_target 으로 대체 적용.
+   - evaluation_strategy 를 eval_strategy 파라미터로 변경.
+   - tokenizer 를 processing_class 파라미터로 변경.
+   - 디코딩 단계 패딩 토큰(-100) OverflowError 방어 로직 추가.
+3. 검증: 1 Epoch 단위 정상 학습(Eval Loss 6.219) 성공 및 발산 현상 없음.

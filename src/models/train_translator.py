@@ -23,9 +23,13 @@ class MiddleKoreanTranslatorTrainer:
         self.model = BartForConditionalGeneration.from_pretrained(self.model_name)
         
         # 중세국어 특별 자모(아래아, 반치음, 순경음비읍 등) 및 NFD 처리 확장을 위한 특수 토큰 추가 로직
-        # 추후 국립국어원 데이터 분석 후 필요한 vocab을 추가합니다.
-        # self.tokenizer.add_tokens(['ㆍ', 'ㅿ', 'ㅸ'])
-        # self.model.resize_token_embeddings(len(self.tokenizer))
+        # 향후 국립국어원 말뭉치(대규모 코퍼스) 도착 시, test_tokenizer_nfd.py와 연동하여 
+        # 아래 리스트(old_hangul_tokens)를 동적으로 확장(json 로드 방식 등)할 수 있도록 설계했습니다.
+        old_hangul_tokens = ['ㆍ', 'ㅿ', 'ㅸ', 'ㆁ', 'ㆆ', 'ㅱ', 'ㅹ', '〮', '〯']
+        num_added = self.tokenizer.add_tokens(old_hangul_tokens)
+        if num_added > 0:
+            print(f"Added {num_added} old Hangul tokens to the vocabulary.")
+            self.model.resize_token_embeddings(len(self.tokenizer))
         
         self.metric = evaluate.load("sacrebleu")
 
@@ -64,8 +68,7 @@ class MiddleKoreanTranslatorTrainer:
         model_inputs = self.tokenizer(inputs, max_length=128, truncation=True, padding=False)
         
         # labels for decoder
-        with self.tokenizer.as_target_tokenizer():
-            labels = self.tokenizer(targets, max_length=128, truncation=True, padding=False)
+        labels = self.tokenizer(text_target=targets, max_length=128, truncation=True, padding=False)
             
         model_inputs["labels"] = labels["input_ids"]
         return model_inputs
@@ -75,6 +78,7 @@ class MiddleKoreanTranslatorTrainer:
         if isinstance(preds, tuple):
             preds = preds[0]
             
+        preds = np.where(preds != -100, preds, self.tokenizer.pad_token_id)
         decoded_preds = self.tokenizer.batch_decode(preds, skip_special_tokens=True)
         # Replace -100 in the labels as we can't decode them.
         labels = np.where(labels != -100, labels, self.tokenizer.pad_token_id)
@@ -99,13 +103,13 @@ class MiddleKoreanTranslatorTrainer:
         
         training_args = Seq2SeqTrainingArguments(
             output_dir=output_dir,
-            evaluation_strategy="epoch",
+            eval_strategy="epoch",
             learning_rate=3e-5,
             per_device_train_batch_size=16,
             per_device_eval_batch_size=16,
             weight_decay=0.01,
             save_total_limit=3,
-            num_train_epochs=5,
+            num_train_epochs=1,
             predict_with_generate=True,
             fp16=torch.cuda.is_available(),
             logging_steps=50,
@@ -117,7 +121,7 @@ class MiddleKoreanTranslatorTrainer:
             args=training_args,
             train_dataset=tokenized_train,
             eval_dataset=tokenized_eval,
-            tokenizer=self.tokenizer,
+            processing_class=self.tokenizer,
             data_collator=data_collator,
             compute_metrics=self.compute_metrics
         )
