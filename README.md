@@ -20,7 +20,8 @@
 | **chrF Score** | sacrebleu Baseline | **11.36** |
 | **Hallucination Rate** | Modern Term Detection | **0.58 %** |
 
-*측정 일시: 2026-05-16 (이전 v2 모델 기준. 현재 Phase 10이 완료되어 총 1,600여 쌍의 순수 15세기 v3 데이터셋이 확보되었으며, 곧 모델 v3 학습이 진행될 예정입니다.)*
+*측정 일시: 2026-05-16 (이전 v2 모델 기준)*
+> **Note:** 현재 데이터 파이프라인(Phase 10)을 통해 정제된 중세국어-현대어 병렬 데이터셋 1,600여 쌍 이상이 확보되었으며 v3 모델 학습 대기 중입니다. 추후 v3 학습 완료 시 지표를 업데이트할 예정입니다.
 
 ### 🚀 향후 벤치마크 로드맵 (Issue #3)
 현재 지표는 High-end 데스크탑 사양(RTX 5080) 기준입니다. 추후 실제 웹 서비스 배포 환경을 고려하여 다음을 측정할 계획입니다.
@@ -71,21 +72,27 @@ RESTful 형태의 중세국어 번역 서버를 시작합니다.
 uvicorn src.api.app:app --reload
 ```
 
+### 3. 검수자용 웹 UI (Streamlit) 구동
+Tinder 스타일의 번역 검수 웹 애플리케이션을 실행합니다.
+```bash
+python -m streamlit run src/api/review_app.py
+```
+
 ## 디렉토리 구조
+- `.github/workflows/`: CI/CD (GitHub Actions) 파이프라인 구성 파일
 - `data/`
   - `raw/`: 원시 데이터 및 `scp-ko-15c.wikidot` 아카이브 등
   - `processed/`: 옛한글 정규화 및 필터링 완료 코퍼스 (`samgang_parallel.jsonl` 등)
-- `models/`: 모델 체크포인트 보관소 (`kobart-middle-korean`)
-- `notebooks/`: 실험용 주피터 노트북
+  - `synthetic/`: LLM 기반 합성 데이터 저장소
+- `models/`: 다운로드된 베이스 모델 및 파인튜닝 어댑터 (체크포인트)
 - `src/`
   - `api/`: FastAPI 서버 및 Streamlit 앱 (`app.py`, `review_app.py`, `ocr_app.py`)
-  - `augment/`: LLM 기반 합성 데이터 생성 (`synthetic_gen.py`, `filter_data.py`)
+  - `augment/`: LLM 기반 합성 데이터 생성 및 필터링 (`synthetic_gen.py`, `filter_data.py`)
   - `crawlers/`: 역사 DB 크롤러 (`itkc_scraper.py` 등)
-  - `models/`: 추론, OCR, 평가 스크립트
-  - `preprocess/`: 옛한글 NFD 정규화 및 데이터셋 전처리 (`build_samgang_dataset.py` 등)
-  - `train/`: 학습 스크립트 (`train.py`, `model_setup.py`)
-  - `utils/`: 기타 유틸리티 (`dataset_qc.py` 등)
-- `lora_model_bidirectional_v3/`: 최종 양방향 번역 LoRA 어댑터 가중치 (학습 예정)
+  - `models/`: 모델 로딩, 추론(Inference), OCR, 평가 스크립트
+  - `preprocess/`: 데이터 정제 및 옛한글 NFD 유니코드 정규화
+  - `tests/`: 벤치마크 및 단위 테스트 (`performance_benchmark.py`, `test_basic.py`)
+  - `train/`: 모델 파인튜닝 스크립트 (`train.py`, `data_loader.py`)
 
 ## 현재 진행 상황
 - **Phase 8~10 (데이터 재구축 및 모델 학습 파이프라인 완성)**: 
