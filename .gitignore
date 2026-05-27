@@ -8,6 +8,7 @@ venv/
 # Models & Weights
 lora_model_*/
 outputs*/
+models/onnx_*/
 *.safetensors
 *.bin
 *.pth

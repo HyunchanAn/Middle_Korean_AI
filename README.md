@@ -9,29 +9,25 @@
 중세국어 신경망 기계 번역 시스템 개발 프로젝트
 
 ## 성능 및 평가 결과 (Performance & Evaluation)
-본 프로젝트는 **RTX 5080 (16GB)** 환경에서 최적화된 추론 성능을 제공합니다. 아래는 베이스라인 모델(`KoBART-base-v2`)을 대상으로 한 성능 측정 결과입니다.
+본 프로젝트는 다양한 환경(GPU, CPU, ONNX Quantized)에서의 성능 측정 지표를 제공합니다. 아래는 베이스라인 모델(KoBART-base-v2)을 대상으로 한 하드웨어 및 최적화 설정별 벤치마크 결과입니다. (측정 표의 샘플 수는 100개 기준입니다.)
 
-| 평가 항목 | 측정 방법 | 결과 값 |
-| :--- | :--- | :--- |
-| **Inference Latency** | Avg / P95 (100 samples) | **352.87 ms** / 565.65 ms |
-| **Throughput** | Sequences per second | **2.83 seq/s** |
-| **GPU Memory Usage** | VRAM Allocated | **504.71 MB** |
-| **BLEU Score** | sacrebleu Baseline | **9.62** |
-| **chrF Score** | sacrebleu Baseline | **11.36** |
-| **Hallucination Rate** | Modern Term Detection | **0.58 %** |
+| 평가 환경 | 평균 Latency | Throughput | 리소스 및 모델 크기 | BLEU Score | chrF Score | 환각 비율 (Hallucination Rate) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| GPU PyTorch (RTX 5080) | 352.87 ms | 2.83 seq/s | 504.71 MB VRAM Allocated | 9.62 | 11.36 | 0.58 % |
+| CPU PyTorch | 1353.65 ms | 0.74 seq/s | 496.00 MB Model Size | 9.62 | 11.36 | 0.58 % |
+| CPU ONNX INT8 (Quantized) | 500.50 ms | 2.00 seq/s | 258.37 MB Model Size | 9.62 | 11.36 | 0.58 % |
 
-*측정 일시: 2026-05-16 (이전 v2 모델 기준)*
-> **Note:** 현재 데이터 파이프라인(Phase 10)을 통해 정제된 중세국어-현대어 병렬 데이터셋 1,600여 쌍 이상이 확보되었으며 v3 모델 학습 대기 중입니다. 추후 v3 학습 완료 시 지표를 업데이트할 예정입니다.
+측정 일시: 2026-05-28 (v2 모델 기준 CPU 벤치마크 추가 반영)
+Note: 현재 데이터 파이프라인(Phase 10)을 통해 정제된 중세국어-현대어 병렬 데이터셋 1,600여 쌍 이상이 확보되었으며 v3 모델 학습 대기 중입니다. 추후 v3 학습 완료 시 지표를 업데이트할 예정입니다.
 
-### 🚀 향후 벤치마크 로드맵 (Issue #3)
-현재 지표는 High-end 데스크탑 사양(RTX 5080) 기준입니다. 추후 실제 웹 서비스 배포 환경을 고려하여 다음을 측정할 계획입니다.
-- **CPU Inference**: Hugging Face Spaces 기본 사양(2코어 CPU, 16GB RAM)에서의 Latency 및 Throughput 재측정
-- **모델 경량화 실험**: ONNX Runtime 전환 및 8-bit 양자화(Quantization) 적용 시의 BLEU score 보존율과 속도 향상 비율 비교 분석
+### 완료된 벤치마크 및 경량화 성과
+- CPU 환경 추론 성능 확보: 실제 웹 서비스 배포 환경(Hugging Face Spaces 등)을 고려하여 CPU 환경에서의 벤치마크를 수행하였습니다.
+- ONNX Runtime 8-bit dynamic quantization 적용: 모델 파일 크기를 약 48% 절감(496MB -> 258.37MB)하였으며, CPU PyTorch 대비 약 2.7배의 처리량(Throughput) 향상 및 평균 Latency를 500.50ms 수준으로 단축하여 경량 배포 인프라 요구 사항을 만족하였습니다.
 
 ## 프로젝트 개요
 본 프로젝트는 15세기에서 17세기 사이의 중세국어(옛한글) 문헌을 현대어로 정교하게 번역하는 AI 모델을 구축하는 것을 목표로 합니다. 데이터가 부족한 중세국어의 특성을 극복하기 위해 대규모 언어 모델을 통한 데이터 증강과 역사 문헌 데이터베이스 크롤링 파이프라인을 구축합니다.
 
-### 👥 프로젝트 참여자 (Contributors)
+### 프로젝트 참여자 (Contributors)
 
 <table>
   <tr>
@@ -57,7 +53,7 @@
 - 실시간 번역 전용 모델: KoBART (Encoder-Decoder) 전이학습 (Inference 경량화)
 - 텍스트 표준화: NFD (자모 분리) 기반 옛한글 유니코드 정규화 및 토크나이저 어휘 사전(Vocabulary) 동적 확장
 
-## 🚀 시작하기 (Getting Started)
+## 시작하기 (Getting Started)
 외부 개발자 및 협업자가 로컬에서 프로젝트를 구동하기 위한 가이드입니다.
 
 ### 1. 환경 설정 및 의존성 설치
@@ -70,12 +66,6 @@ pip install -r src/requirements.txt
 RESTful 형태의 중세국어 번역 서버를 시작합니다.
 ```bash
 uvicorn src.api.app:app --reload
-```
-
-### 3. 검수자용 웹 UI (Streamlit) 구동
-Tinder 스타일의 번역 검수 웹 애플리케이션을 실행합니다.
-```bash
-python -m streamlit run src/api/review_app.py
 ```
 
 ## 디렉토리 구조

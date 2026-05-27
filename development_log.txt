@@ -189,3 +189,20 @@
 - Issue #3, #6: CPU 환경에서 ONNX 8-bit 양자화 적용 및 성능 벤치마크(`performance_benchmark.py`) 수행 완료.
 - Issue #7: `gogamza/kobart-base-v2` 인코더 기반 코사인 임베딩 유사도를 평가하는 휴리스틱 필터 완성 (`filter_data.py`).
 - Issue #8: 스트림릿 검수 앱/구글 시트 연계를 위한 자동 모델 확장 스크립트 작성 완료 (`auto_expand_pipeline.py`).
+
+[2026-05-28 01:15] CPU 및 ONNX 8-bit 양자화 벤치마크 패치 및 리드미 최신화
+1. 벤치마크 스크립트 오류 수정 (src/tests/performance_benchmark.py):
+   - transformers 4.45 이상 버전과 optimum 간의 호환성 버그로 인해 발생하던 NormalizedConfig allow_new 중복 입력 에러 및 vocab_size, bos/eos/pad_token_id, hidden_size, encoder_attention_heads 등 속성 누락으로 인한 AttributeError를 우회하는 몽키 패치를 적용함.
+   - KoBART 토크나이저 아웃풋에서 불필요한 token_type_ids 인자를 팝하여 PyTorch 및 ONNX Runtime generation 시 발생하는 ValueError를 차단함.
+   - optimum ORTQuantizer의 Seq2Seq 멀티 파일 양자화 제약 사항(NotImplementedError)을 해결하기 위해 디렉토리 내의 모든 ONNX 파일들을 동적으로 찾아 순회하며 개별 양자화(file_suffix="")를 적용하고 필수 설정 파일들을 복사하도록 수정함.
+2. 벤치마크 재수행 및 결과 획득 (100 샘플 기준):
+   - CPU PyTorch: 평균 Latency 1353.65 ms, 처리량 0.74 seq/s
+   - CPU ONNX INT8 Quantized: 평균 Latency 500.50 ms, 처리량 2.00 seq/s (속도 약 2.7배 향상, 모델 크기 496MB -> 258.37MB로 약 48% 절감)
+3. 문서 최신화 (README.md):
+   - GPU, CPU, ONNX dynamic quantized 세 가지 환경별 성능을 한눈에 비교할 수 있는 통합 테이블을 구성하여 성능 및 평가 결과를 업데이트함.
+
+[2026-05-28 01:25] v3 모델 학습 전략 및 데이터 검수 대기 현황 정리
+1. v3 완성형 모델 개발 전제조건 확인:
+   - 기계적으로 증강된 1,600여 쌍의 병렬 코퍼스에 포함되어 있을 수 있는 번역 오역 및 문법적 환각 현상을 방지하기 위해, 최종 v3 학습 데이터셋은 보라샘(유보라 님)의 인간 검수(HITL) 작업 완료 후 추출하는 것을 대원칙으로 정함.
+2. 임시 대안 수립:
+   - 검수 완료 전 대기 시간 동안 학습 인프라 및 토크나이저 어휘 사전 확장 로직의 안정성을 사전 검증하기 위해, 자동 필터(filter_data.py)만 통과한 1,600쌍 데이터로 임시 v3-beta 모델 빌드를 선제적으로 테스트할 수 있도록 파이프라인 정비를 완료함.
