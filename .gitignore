@@ -26,6 +26,7 @@ data/processed/*.jsonl
 *.swp
 
 PROJECT_PLAN_FOR_BORA.md
+GEMINI.md
 .streamlit/secrets.toml 
  
  
