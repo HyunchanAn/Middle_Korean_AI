@@ -8,6 +8,36 @@
 
 중세국어 신경망 기계 번역 시스템 개발 프로젝트
 
+## Technical Architecture & Workflow
+
+### Architecture Diagram
+```mermaid
+graph TD
+    A[Middle Korean Text] --> B[FastAPI Backend]
+    B --> C[Text Normalization NFD]
+    C --> D[KoBART Encoder-Decoder ONNX]
+    D --> E[Modern Korean Translation]
+    E --> F[Streamlit Web App]
+    G[Ollama LLM] --> H[Data Augmentation]
+    H --> D
+```
+### Sequence Diagram
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as Streamlit
+    participant API as FastAPI
+    participant Model as KoBART
+    User->>UI: Input Middle Korean Text
+    UI->>API: POST /translate
+    API->>API: Unicode NFD Normalization
+    API->>Model: Run Inference
+    Model-->>API: Modern Korean Output
+    API-->>UI: Return Translation
+    UI-->>User: Display Results
+```
+
+
 ## 성능 및 평가 결과 (Performance & Evaluation)
 본 프로젝트는 다양한 환경(GPU, CPU, ONNX Quantized)에서의 성능 측정 지표를 제공합니다. 아래는 베이스라인 모델(KoBART-base-v2)을 대상으로 한 하드웨어 및 최적화 설정별 벤치마크 결과입니다. (측정 표의 샘플 수는 100개 기준입니다.)
 
@@ -108,7 +138,7 @@ uvicorn src.api.app:app --reload
 ## 참고문헌 (References)
 본 프로젝트의 학습 및 검증에 활용되거나 추가 수집 대상으로 지정된 고문헌 자료들입니다. (출처: [한국고전종합DB - 세종한글고전](http://db.sejongkorea.org/))
 
-### 📖 석보상절 (釋譜詳節, 1447년)
+###  석보상절 (釋譜詳節, 1447년)
 세종의 명으로 수양대군(세조)이 부처의 일대기와 설법을 엮어 편찬한 최초의 산문 자료.
 - [역주 석보상절 제6](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v006&recordId=P13_SS_e01_v006)
 - [역주 석보상절 제9](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v009&recordId=P13_SS_e01_v009)
@@ -118,12 +148,12 @@ uvicorn src.api.app:app --reload
 - [역주 석보상절 제20](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v020&recordId=P13_SS_e01_v020)
 - [역주 석보상절 제21](http://db.sejongkorea.org/front/detail.do?bkCode=P13_SS_v021&recordId=P13_SS_e01_v021)
 
-### 📖 삼강행실도 (三綱行實圖, 1432년 / 언해본 1481년)
+###  삼강행실도 (三綱行實圖, 1432년 / 언해본 1481년)
 조선 초기 백성들의 윤리 교화를 위해 편찬된 서적으로, 삽화와 함께 중세국어 원문이 기록되어 있습니다.
 - [역주 삼강행실효자도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v001_0000)
 - [역주 삼강행실충신도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v002_0000)
 - [역주 삼강행실열녀도](http://db.sejongkorea.org/front/detail.do?bkCode=P01_SG_v001&recordId=P01_SG_e01_v003_0000)
 
-### 📖 기타 교화 문헌
+###  기타 교화 문헌
 - **이륜행실도 (二倫行實圖, 1518년)**: [역주 이륜행실도](http://db.sejongkorea.org/front/detail.do?bkCode=P02_IR_v001&recordId=P02_IR_e01)
 - **정속언해 (正俗諺解, 1518년)**: [역주 정속언해](http://db.sejongkorea.org/front/detail.do?bkCode=P03_JS_v001&recordId=P03_JS_e01)

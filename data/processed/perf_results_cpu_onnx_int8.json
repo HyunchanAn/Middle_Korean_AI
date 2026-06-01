@@ -1,0 +1,11 @@
+{
+  "model": "gogamza/kobart-base-v2",
+  "device": "CPU",
+  "quantize": "onnx_int8",
+  "num_samples": 100,
+  "avg_latency_ms": 500.4971194267273,
+  "p95_latency_ms": 828.0186891555786,
+  "throughput_fps": 1.9980134973512067,
+  "vram_allocated_mb": 0.0,
+  "model_size_mb": 258.37145709991455
+}
