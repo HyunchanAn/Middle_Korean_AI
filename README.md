@@ -13,12 +13,12 @@
 ### Architecture Diagram
 ```mermaid
 graph TD
-    A[Middle Korean Text] --> B[FastAPI Backend]
-    B --> C[Text Normalization NFD]
-    C --> D[KoBART Encoder-Decoder ONNX]
-    D --> E[Modern Korean Translation]
-    E --> F[Streamlit Web App]
-    G[Ollama LLM] --> H[Data Augmentation]
+    A["Middle Korean Text"] --> B["FastAPI Backend"]
+    B --> C["Text Normalization NFD"]
+    C --> D["KoBART Encoder-Decoder ONNX"]
+    D --> E["Modern Korean Translation"]
+    E --> F["Streamlit Web App"]
+    G["Ollama LLM"] --> H["Data Augmentation"]
     H --> D
 ```
 ### Sequence Diagram
