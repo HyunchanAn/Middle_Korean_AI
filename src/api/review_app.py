@@ -3,10 +3,29 @@ import json
 import os
 from pathlib import Path
 
+import streamlit.components.v1 as components
+
 # 구글 시트 웹훅 URL 확인
 HAS_WEBHOOK = "gsheets_webhook_url" in st.secrets
 
 st.set_page_config(page_title="중세국어 번역 데이터 검수기", layout="wide")
+
+# CSS 주입: 옛한글 렌더링 최적화 폰트 및 텍스트 박스 스타일
+st.markdown("""
+<style>
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/HCRBatang.woff');
+
+.mk-text {
+    font-family: 'HCRBatang', 'Malgun Gothic', serif;
+    font-size: 28px !important;
+    line-height: 1.6;
+    padding: 15px;
+    background-color: #262730;
+    border-radius: 8px;
+    color: #FAFAFA;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # 로컬 JSON 백업 경로 설정
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "processed"
@@ -76,7 +95,7 @@ def main():
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("📜 15세기 옛말 (원문)")
-        st.info(current_item.get("input", ""))
+        st.markdown(f'<div class="mk-text">{current_item.get("input", "")}</div>', unsafe_allow_html=True)
         
     with col2:
         st.subheader("💡 인공지능 요즘말 (현대어)")
@@ -148,6 +167,58 @@ def main():
             
     st.progress((idx) / len(data))
     st.caption(f"진행도: {idx} / {len(data)}")
+
+    # 키보드 단축키 이벤트 리스너 주입 (마우스 없이 검수 진행)
+    components.html(
+        """
+        <script>
+        const doc = window.parent.document;
+        
+        function triggerClick(text) {
+            const buttons = Array.from(doc.querySelectorAll('button'));
+            const btn = buttons.find(b => b.innerText.includes(text));
+            if(btn) {
+                btn.click();
+            }
+        }
+        
+        if (!window.parent._mk_keyboard_listener_added) {
+            window.parent._mk_keyboard_listener_added = true;
+            doc.addEventListener('keydown', function(e) {
+                // 텍스트 영역(요즘말 수정)에서 타이핑 중일 때는 일반 단축키 무시
+                if (doc.activeElement.tagName === 'TEXTAREA' || doc.activeElement.tagName === 'INPUT') {
+                    // 단, Ctrl+Enter 조합 시 '고침' 버튼 트리거
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        triggerClick('고침');
+                        e.preventDefault();
+                    }
+                    return;
+                }
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        triggerClick('이전');
+                        break;
+                    case 'ArrowRight':
+                        triggerClick('다음');
+                        break;
+                    case '1':
+                    case 'Enter':
+                        triggerClick('통과');
+                        break;
+                    case '3':
+                    case 'Delete':
+                    case 'Backspace':
+                        triggerClick('버림');
+                        break;
+                }
+            });
+        }
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
 
 if __name__ == "__main__":
     main()
