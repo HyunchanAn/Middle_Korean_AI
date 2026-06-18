@@ -60,8 +60,8 @@ sequenceDiagram
 
 <table>
   <tr>
-    <td align="center"><img src="docs/assets/profile_HyunchanAn.jpg" width="150px;" alt="Hyunchan An"/><br /><sub><b>안현찬</b></sub><br />수석 개발<br /></td>
-    <td align="center"><img src="docs/assets/profile_UBora.jpg" width="150px;" alt="유보라"/><br /><sub><b>유보라</b></sub><br />중세국어 번역 데이터 검수<br /></td>
+    <td align="center"><img src="docs/assets/profile_HyunchanAn.jpg" width="150px;" alt="Hyunchan An"/><br /><sub><b>안현찬</b></sub><br />수석 개발<br /><a href="https://x.com/DDS_HCAn">Twitter</a></td>
+    <td align="center"><img src="docs/assets/profile_UBora.jpg" width="150px;" alt="유보라"/><br /><sub><b>유보라</b></sub><br />중세국어 번역 데이터 검수<br /><a href="https://chzzk.id/Ubora">Chzzk</a> | <a href="https://x.com/B0R4_S2C">Twitter</a></td>
   </tr>
 </table>
 
